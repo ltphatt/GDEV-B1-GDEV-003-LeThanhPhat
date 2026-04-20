@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagable
 {
     public int HP = 3;
     public int moveSpeed = 5;
@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public float fireRate = 0.5f;
     float fireTimer = 0f;
     bool canFire = true;
-
     bool isAlive = true;
 
     void Update()
