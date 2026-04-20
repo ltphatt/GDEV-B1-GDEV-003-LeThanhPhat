@@ -12,8 +12,15 @@ public class Player : MonoBehaviour
     float fireTimer = 0f;
     bool canFire = true;
 
+    bool isAlive = true;
+
     void Update()
     {
+        if (!isAlive)
+        {
+            return;
+        }
+
         Move();
         Shoot();
 
@@ -42,6 +49,32 @@ public class Player : MonoBehaviour
         {
             Instantiate(bulletPrefab, transform.position, transform.rotation);
             canFire = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(1);
+
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(1);
+            }
+        }
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        HP -= dmg;
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
+            isAlive = false;
         }
     }
 
