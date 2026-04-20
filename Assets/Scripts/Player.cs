@@ -7,7 +7,6 @@ public class Player : MonoBehaviour, IDamagable
     public int HP = 3;
     public int moveSpeed = 5;
     public GameObject bulletPrefab;
-
     public float fireRate = 0.5f;
     float fireTimer = 0f;
     bool canFire = true;
@@ -51,19 +50,11 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(collision.gameObject.name);
-
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(1);
-
-            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(1);
-            }
         }
     }
 
