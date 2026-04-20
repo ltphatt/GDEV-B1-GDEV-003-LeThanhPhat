@@ -1,16 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
 {
     public int HP = 3;
-    public int moveSpeed = 5;
+    public float moveSpeed = 5f;
     public GameObject bulletPrefab;
     public float fireRate = 0.5f;
     float fireTimer = 0f;
     bool canFire = true;
     bool isAlive = true;
+    int enemyCount = 0;
+
+    public TextMeshProUGUI hpText;
+    public TextMeshProUGUI enemyCountText;
+
+    void Start()
+    {
+        hpText.text = "HP: " + HP;
+        enemyCountText.text = "Enemies: " + enemyCount;
+    }
 
     void Update()
     {
@@ -61,10 +72,13 @@ public class Player : MonoBehaviour, IDamagable
     public void TakeDamage(int dmg)
     {
         HP -= dmg;
+        hpText.text = "HP: " + HP;
         if (HP <= 0)
         {
             Destroy(gameObject);
             isAlive = false;
+
+            GameManager.Instance.ShowLosePopup();
         }
     }
 
