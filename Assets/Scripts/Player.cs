@@ -8,10 +8,21 @@ public class Player : MonoBehaviour
     public int moveSpeed = 5;
     public GameObject bulletPrefab;
 
+    public float fireRate = 0.5f;
+    float fireTimer = 0f;
+    bool canFire = true;
+
     void Update()
     {
         Move();
         Shoot();
+
+        fireTimer += Time.deltaTime;
+        if (fireTimer >= fireRate)
+        {
+            canFire = true;
+            fireTimer = 0f;
+        }
     }
 
     void Move()
@@ -20,18 +31,17 @@ public class Player : MonoBehaviour
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0;
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePosition - transform.position);
             transform.position = Vector3.MoveTowards(transform.position, mousePosition, moveSpeed * Time.deltaTime);
         }
     }
 
     void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && canFire)
         {
-            Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-
-            Rigidbody2D rb = bulletPrefab.GetComponent<Rigidbody2D>();
-            rb.AddForce(Vector2.up * 500);
+            Instantiate(bulletPrefab, transform.position, transform.rotation);
+            canFire = false;
         }
     }
 
