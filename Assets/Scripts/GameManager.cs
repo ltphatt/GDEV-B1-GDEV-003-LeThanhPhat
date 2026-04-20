@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     {
         winPopup.SetActive(false);
         losePopup.SetActive(false);
+
+        timeRemaining = timeToWin;
+        timerText.text = "Time: " + timeRemaining + "s";
     }
 
     void Update()
